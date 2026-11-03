@@ -1,0 +1,8 @@
+//
+// Created by aluno on 03/11/2026.
+//
+
+#ifndef TRABALHO_FINAL_PROG_II_ESTOQUE_H
+#define TRABALHO_FINAL_PROG_II_ESTOQUE_H
+
+#endif //TRABALHO_FINAL_PROG_II_ESTOQUE_H
