@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.1)
+cmake_minimum_required(VERSION 3.21)
 project(Trabalho_Final_Prog_II C)
 
 set(CMAKE_C_STANDARD 11)
@@ -10,3 +10,14 @@ add_executable(Trabalho_Final_Prog_II
         include/gastos.h
         src/estoque.c
         src/gastos.c)
+
+include(FetchContent)
+
+FetchContent_Declare(
+        libprg
+        GIT_REPOSITORY https://github.com/brunavc09/libprg.git
+        GIT_TAG        main
+)
+FetchContent_MakeAvailable(libprg)
+
+target_link_libraries(Trabalho_Final_Prog_II PRIVATE libprg)
