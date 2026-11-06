@@ -8,10 +8,16 @@ typedef struct material {
     char insumo[200];
     char marca[100];
     char especificacoes[200];
-    int quantidade;
+    double quantidade;
     float valor_unitario;
     char local[200];
 } material;
+
+no_avl_t* cadastrar_material(no_avl_t* raiz, material* novo);
+material* buscar_por_id(no_avl_t* raiz, int id);
+void buscar_por_nome(no_avl_t* raiz, const char * insumo);
+no_avl_t* remover_material(no_avl_t* raiz, int id);
+
 
 #endif //TRABALHO_FINAL_PROG_II_ESTOQUE_H
 
