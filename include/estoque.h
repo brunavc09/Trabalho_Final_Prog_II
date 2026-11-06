@@ -4,6 +4,7 @@
 #endif //TRABALHO_FINAL_PROG_II_ESTOQUE_H
 
 typedef struct material {
+    int id;
     char insumo[200];
     char marca[100];
     char especificações[200];
