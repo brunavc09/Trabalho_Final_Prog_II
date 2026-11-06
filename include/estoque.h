@@ -1,6 +1,8 @@
 #ifndef TRABALHO_FINAL_PROG_II_ESTOQUE_H
 #define TRABALHO_FINAL_PROG_II_ESTOQUE_H
 
+#include <libprg/libprg.h>
+
 typedef struct material {
     int id;
     char insumo[200];

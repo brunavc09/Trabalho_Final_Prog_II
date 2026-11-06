@@ -4,4 +4,6 @@
 #ifndef TRABALHO_FINAL_PROG_II_GASTOS_H
 #define TRABALHO_FINAL_PROG_II_GASTOS_H
 
+#include <libprg/libprg.h>
+
 #endif //TRABALHO_FINAL_PROG_II_GASTOS_H

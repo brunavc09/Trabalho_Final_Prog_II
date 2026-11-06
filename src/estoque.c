@@ -1,7 +1,6 @@
-#include "estoque.h"
-#include <stdio.h>
-#include <stdlib.h>
+//
+// Created by aluno on 03/11/2026.
+//
 
-material *criar_registro(int id) {
-    
-}
+#include "estoque.h"
+#include <libprg/libprg.h>
