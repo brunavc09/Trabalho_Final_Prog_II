@@ -21,4 +21,4 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(libprg)
 
-target_link_libraries(Trabalho_Final_Prog_II PRIVATE libprg)
+target_link_libraries(Trabalho_Final_Prog_II PUBLIC libprg)
