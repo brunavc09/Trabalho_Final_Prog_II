@@ -9,7 +9,7 @@ typedef struct material {
     char marca[100];
     char especificacoes[200];
     int quantidade;
-    float valor;
+    float valor_unitario;
     char local[200];
 } material;
 
