@@ -4,6 +4,7 @@
 #include <libprg/libprg.h>
 
 typedef struct material {
+    int id;
     char insumo[200];
     char marca[100];
     char especificacoes[200];
