@@ -10,7 +10,9 @@ add_executable(Trabalho_Final_Prog_II
         include/gastos.h
         src/estoque.c
         src/gastos.c
-        src/main.c)
+        src/main.c
+        funções_aux/avl.h
+        funções_aux/avl.c)
 
 include(FetchContent)
 
