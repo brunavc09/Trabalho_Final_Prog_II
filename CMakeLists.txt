@@ -11,9 +11,7 @@ add_executable(Trabalho_Final_Prog_II
         src/estoque.c
         src/gastos.c
         src/main.c
-        funções_aux/avl.h
-        funções_aux/avl.c)
-
+)
 include(FetchContent)
 
 FetchContent_Declare(
