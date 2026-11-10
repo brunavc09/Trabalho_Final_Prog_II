@@ -4,18 +4,23 @@
 
 #include "gastos.h"
 #include <stdio.h>
+#include <string.h>
 #include <libprg/libprg.h>
 
 double custos_parciais(material *componente, double qtd_utilizada) {
-    if (componente->quantidade==0) {
-        printf("O Material não está presente em estoque.\n");
-        return 0;
+    if (componente->quantidade==0 || componente->quantidade==NULL) {
+        return -1;
     }
     else if (qtd_utilizada>componente->quantidade) {
-        printf("A quantidade utilizada não condiz com a quantidade presente em estoque.\n");
-        return 0;
+        return -2;
     }
+    else if (qtd_utilizada<=0) {
+        return -3;
+    }
+    else {
         double valor_por_qtd;
         valor_por_qtd = componente->valor_unitario*qtd_utilizada;
         return valor_por_qtd;
+    }
 }
+

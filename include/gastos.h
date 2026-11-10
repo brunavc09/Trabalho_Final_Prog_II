@@ -8,5 +8,6 @@
 #include "estoque.h"
 
 double custos_parciais(material *componente, double qtd_utilizada);
+double custos_totais(int total_insumos,int raiz);
 
 #endif //TRABALHO_FINAL_PROG_II_GASTOS_H
