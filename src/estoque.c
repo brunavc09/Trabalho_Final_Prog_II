@@ -4,6 +4,7 @@
 #include <string.h>
 
 static int proximo_id = 1;
+
 static void buscar_nome_rec(no_avl_t* no, const char * texto) {
     if (no == NULL) {
         return;
@@ -11,9 +12,11 @@ static void buscar_nome_rec(no_avl_t* no, const char * texto) {
     buscar_nome_rec(no->esquerda, texto);
     material* mat = no->dado;
     if ( strstr(mat->insumo, texto) != NULL ) {
-        printf("%d\n", mat->id);
-        printf("%s\n", mat->insumo);
-        printf("%lf\n", mat->quantidade);
+        printf("Id do produto: %d\n", mat->id);
+        printf("Nome: %s\n", mat->insumo);
+        printf("Especificações: %s\n", mat->especificacoes);
+        printf("Quantidade: %2lf\n", mat->quantidade);
+        printf("Onde esta guardado\n", mat->local);
     }
     buscar_nome_rec(no->direita, texto);
 }

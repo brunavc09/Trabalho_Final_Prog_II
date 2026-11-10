@@ -17,7 +17,7 @@ include(FetchContent)
 FetchContent_Declare(
         libprg
         GIT_REPOSITORY https://github.com/brunavc09/libprg.git
-        GIT_TAG        v1.1
+        GIT_TAG        v1.2
 )
 FetchContent_MakeAvailable(libprg)
 
