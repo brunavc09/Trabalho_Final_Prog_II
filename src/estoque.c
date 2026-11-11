@@ -4,21 +4,26 @@
 #include <string.h>
 
 static int proximo_id = 1;
-
-static void buscar_nome_rec(no_avl_t* no, const char * texto) {
-    if (no == NULL) {
-        return;
-    }
-    buscar_nome_rec(no->esquerda, texto);
-    material* mat = no->dado;
-    if ( strstr(mat->insumo, texto) != NULL ) {
+static int buscar_nome_rec(const no_avl_t* no, const char* texto) {
+    if (no == NULL) return 0;
+    int achados = buscar_nome_rec(no->esquerda, texto);
+    const material* mat = no->dado;
+    if (strstr(mat->insumo, texto) != NULL) {
         printf("Id do produto: %d\n", mat->id);
         printf("Nome: %s\n", mat->insumo);
+        printf("Marca: %s\n", mat->marca);
         printf("Especificações: %s\n", mat->especificacoes);
-        printf("Quantidade: %2lf\n", mat->quantidade);
-        printf("Onde esta guardado\n", mat->local);
+        printf("Quantidade: %.2lf\n", mat->quantidade);
+        printf("Onde esta guardado: %s\n", mat->local);
+        achados++;
     }
-    buscar_nome_rec(no->direita, texto);
+    return achados + buscar_nome_rec(no->direita, texto);
+}
+
+void buscar_por_nome(no_avl_t* raiz, const char* insumo) {
+    if (buscar_nome_rec(raiz, insumo) == 0) {
+        printf("Nenhum material encontrado.\n");
+    }
 }
 
 material *buscar_por_id(no_avl_t *raiz, int id) {
@@ -47,12 +52,4 @@ no_avl_t* remover_material(no_avl_t* raiz, int id) {
     no_avl_t* nova_raiz = remover_da_arvore_avl(raiz, id);
     free(material_encontrado);
     return nova_raiz;
-}
-aux_recursiva(no, texto) {
-    if (no == NULL) {
-
-    }
-}
-void buscar_por_nome(no_avl_t* raiz, const char * insumo) {
-
 }
