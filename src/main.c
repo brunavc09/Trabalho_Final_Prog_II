@@ -1,10 +1,13 @@
 //
 // Created by Babi on 06/11/2026.
 //
-
+#include "estoque.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main(void) {
-    printf("Sistema de estoque da marcenaria\n");
+
+
     return 0;
 }
