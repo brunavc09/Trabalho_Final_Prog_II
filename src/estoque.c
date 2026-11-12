@@ -36,9 +36,10 @@ material* buscar_por_nome(no_avl_t* raiz, const char* insumo) {
         if (fim!=id) {
           return buscar_por_id(raiz,aux);
         }
-        else {}
-        printf("Não foi possível realizar a conversão\n");
-        return NULL;
+        else {
+            printf("Não foi possível realizar a conversão\n");
+            return NULL;
+        }
     }
 }
 
