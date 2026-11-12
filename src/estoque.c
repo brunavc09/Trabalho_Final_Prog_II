@@ -17,7 +17,7 @@ static int buscar_nome_rec(const no_avl_t* no, const char* texto) {
         printf("Onde esta guardado: %s\n", mat->local);
         achados++;
     }
-    return achados + buscar_nome_rec(no->direita, texto);
+    return achados = buscar_nome_rec(no->direita, texto);
 }
 
 material* buscar_por_nome(no_avl_t* raiz, const char* insumo) {
@@ -85,4 +85,11 @@ material* criar_material(const char* insumo, const char* marca, const char* espe
     strcpy(m->local, local);
     snprintf(m->local, sizeof m->local, "%s", local);
     return m;
+}
+
+int obter_proximo_id(void) {
+    return proximo_id;
+}
+void definir_proximo_id(int novo_id) {
+    proximo_id = novo_id;
 }
