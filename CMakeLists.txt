@@ -11,6 +11,8 @@ add_executable(Trabalho_Final_Prog_II
         src/estoque.c
         src/gastos.c
         src/main.c
+        src/arquivo.c
+        include/arquivo.h
 )
 include(FetchContent)
 
