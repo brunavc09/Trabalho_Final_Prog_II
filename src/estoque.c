@@ -48,11 +48,10 @@ no_avl_t* remover_material(no_avl_t* raiz, int id) {
     free(material_encontrado);
     return nova_raiz;
 }
-aux_recursiva(no, texto) {
-    if (no == NULL) {
 
-    }
+int obter_proximo_id(void) {
+    return proximo_id;
 }
-void buscar_por_nome(no_avl_t* raiz, const char * insumo) {
-
+void definir_proximo_id(int novo_id) {
+    proximo_id = novo_id;
 }
