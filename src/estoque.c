@@ -20,9 +20,25 @@ static int buscar_nome_rec(const no_avl_t* no, const char* texto) {
     return achados + buscar_nome_rec(no->direita, texto);
 }
 
-void buscar_por_nome(no_avl_t* raiz, const char* insumo) {
+material* buscar_por_nome(no_avl_t* raiz, const char* insumo) {
+    char id[30];
+    int aux;
+    char *fim;
+
     if (buscar_nome_rec(raiz, insumo) == 0) {
         printf("Nenhum material encontrado.\n");
+        return NULL;
+    }
+    else {
+        printf("Qual o id do material encontrado?\n");
+        fgets(id,sizeof(id),stdin);
+        aux=strtol(id,&fim,10);
+        if (fim!=id) {
+          return buscar_por_id(raiz,aux);
+        }
+        else {}
+        printf("Não foi possível realizar a conversão\n");
+        return NULL;
     }
 }
 
