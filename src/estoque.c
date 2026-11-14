@@ -20,7 +20,13 @@ static int buscar_nome_rec(const no_avl_t* no, const char* texto) {
     return achados + buscar_nome_rec(no->direita, texto);
 }
 
-material* buscar_por_nome(no_avl_t* raiz, const char* insumo) {
+void buscar_por_nome(no_avl_t* raiz, const char* insumo) {
+    if (buscar_nome_rec(raiz, insumo) == 0) {
+        printf("Nenhum material encontrado.\n");
+    }
+}
+
+material* BRUNA_buscar_por_nome(no_avl_t* raiz, const char* insumo) {
     char id[30];
     int aux;
     char *fim;
