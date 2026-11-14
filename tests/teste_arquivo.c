@@ -1,9 +1,6 @@
-//
-// Created by Babi on 12/11/2026.
-//
 #include <stdio.h>
-#include "../include/estoque.h"
-#include "../include/arquivo.h"
+#include "estoque.h"
+#include "arquivo.h"
 
 int main() {
     no_avl_t* raiz = NULL;

@@ -74,7 +74,7 @@ no_avl_t* remover_material(no_avl_t* raiz, int id) {
 material* criar_material(const char* insumo, const char* marca, const char* especificacoes,double quantidade, float valor_unitario, const char* local) {
     material* m = calloc(1, sizeof(material));
     if (m == NULL) {
-        printf("Erro na alocação de memória");
+        printf("Erro na alocação de memória\n");
         return NULL;
     }
     snprintf(m->insumo, sizeof m->insumo, "%s", insumo);
@@ -82,7 +82,6 @@ material* criar_material(const char* insumo, const char* marca, const char* espe
     snprintf(m->especificacoes, sizeof m->especificacoes, "%s", especificacoes);
     m->quantidade=quantidade;
     m->valor_unitario=valor_unitario;
-    strcpy(m->local, local);
     snprintf(m->local, sizeof m->local, "%s", local);
     return m;
 }
