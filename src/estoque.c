@@ -17,7 +17,7 @@ static int buscar_nome_rec(const no_avl_t* no, const char* texto) {
         printf("Onde esta guardado: %s\n", mat->local);
         achados++;
     }
-    return achados = buscar_nome_rec(no->direita, texto);
+    return achados + buscar_nome_rec(no->direita, texto);
 }
 
 material* buscar_por_nome(no_avl_t* raiz, const char* insumo) {
