@@ -16,7 +16,6 @@ typedef struct material {
 no_avl_t* cadastrar_material(no_avl_t* raiz, material* novo);
 material* buscar_por_id(no_avl_t* raiz, int id);
 void buscar_por_nome(no_avl_t* raiz, const char* insumo);
-material* BRUNA_buscar_por_nome(no_avl_t* raiz, const char * insumo);
 no_avl_t* remover_material(no_avl_t* raiz, int id);
 material* criar_material(const char* insumo, const char* marca, const char* especificacoes,double quantidade, float valor_unitario, const char* local);
 int obter_proximo_id(void);
