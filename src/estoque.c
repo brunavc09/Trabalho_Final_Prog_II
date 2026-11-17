@@ -17,10 +17,16 @@ static int buscar_nome_rec(const no_avl_t* no, const char* texto) {
         printf("Onde esta guardado: %s\n", mat->local);
         achados++;
     }
-    return achados = buscar_nome_rec(no->direita, texto);
+    return achados + buscar_nome_rec(no->direita, texto);
 }
 
-material* buscar_por_nome(no_avl_t* raiz, const char* insumo) {
+void buscar_por_nome(no_avl_t* raiz, const char* insumo) {
+    if (buscar_nome_rec(raiz, insumo) == 0) {
+        printf("Nenhum material encontrado.\n");
+    }
+}
+
+material* BRUNA_buscar_por_nome(no_avl_t* raiz, const char* insumo) {
     char id[30];
     int aux;
     char *fim;
@@ -74,7 +80,7 @@ no_avl_t* remover_material(no_avl_t* raiz, int id) {
 material* criar_material(const char* insumo, const char* marca, const char* especificacoes,double quantidade, float valor_unitario, const char* local) {
     material* m = calloc(1, sizeof(material));
     if (m == NULL) {
-        printf("Erro na alocação de memória");
+        printf("Erro na alocação de memória\n");
         return NULL;
     }
     snprintf(m->insumo, sizeof m->insumo, "%s", insumo);
@@ -82,7 +88,6 @@ material* criar_material(const char* insumo, const char* marca, const char* espe
     snprintf(m->especificacoes, sizeof m->especificacoes, "%s", especificacoes);
     m->quantidade=quantidade;
     m->valor_unitario=valor_unitario;
-    strcpy(m->local, local);
     snprintf(m->local, sizeof m->local, "%s", local);
     return m;
 }

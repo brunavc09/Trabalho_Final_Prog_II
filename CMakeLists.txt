@@ -6,20 +6,16 @@ set(CMAKE_C_STANDARD 11)
 include_directories(include)
 
 add_executable(Trabalho_Final_Prog_II
-        include/estoque.h
-        include/gastos.h
-        include/arquivo.h
         src/estoque.c
         src/gastos.c
         src/main.c
         src/arquivo.c
-        src/teste_arquivo.c
 )
 
 add_executable(teste_estoque
         include/estoque.h
         include/arquivo.h
-        src/teste_arquivo.c
+        tests/teste_arquivo.c
         src/arquivo.c
         src/estoque.c
 )
