@@ -131,7 +131,7 @@ material *buscar_por_nome_gastos(no_avl_t* raiz,char* insumo,char* marca,char* e
 }
 
 double custos_totais(int total_insumos,no_avl_t *raiz) {
-    char insumo[200],marca[100],esp[200],qtd[30],comando[5]="Sair";
+    char insumo[200],marca[100],esp[200],qtd[30];
     char *fim;
     int aux2;
     double aux=0,total=0,parcial=0;
@@ -147,52 +147,53 @@ double custos_totais(int total_insumos,no_avl_t *raiz) {
         printf("Adicionar material: ");
         fgets(insumo, 200, stdin);
         insumo[strcspn(insumo, "\r\n")] = '\0';
-        aux2=strcmp(insumo,comando);
+        aux2=strcasecmp(insumo,"Sair");
         if (aux2==0) {
             break;
         }
-        printf("Adicionar marca: ");
+        printf("(Opcional) Adicionar marca: ");
         fgets(marca, 100, stdin);
         marca[strcspn(marca, "\r\n")] = '\0';
-        printf("Adicione especificações: ");
+        printf("(Opcional) Adicione especificações: ");
         fgets(esp,200, stdin);
         esp[strcspn(esp, "\r\n")] = '\0';
-        printf("Adicione a quantidade utilizada: ");
-        fgets(qtd,30, stdin);
-        aux=strtod(qtd,&fim);
-        if (fim!=qtd) {
-            material *resul_busca=BRUNA_buscar_por_nome(raiz,insumo);
+        material *resul_busca=buscar_por_nome_gastos(raiz,insumo,marca,esp);
             if (resul_busca==NULL) {
                 i--;
                 continue;
             }
             else {
-                parcial=custos_parciais(resul_busca,aux);
-                if (parcial==-1) {
-                    printf("Produto não possui quantidade em estoque.\n");
-                    i--;
-                    continue;
-                }
-                else if (parcial==-2) {
-                    printf("Quantidade não compatível com estoque.\n");
-                    i--;
-                    continue;
-                }
-                else if (parcial==-3) {
-                    printf("A quantidade utilizada foi informada como zero.\n");
-                    i--;
-                    continue;
-                }
+                printf("Adicione a quantidade utilizada: ");
+                fgets(qtd,30, stdin);
+                aux=strtod(qtd,&fim);
+                if (fim!=qtd) {
+                        parcial=custos_parciais(resul_busca,aux);
+                        if (parcial==-1) {
+                            printf("Produto não possui quantidade em estoque.\n");
+                            i--;
+                            continue;
+                        }
+                        else if (parcial==-2) {
+                            printf("Quantidade não compatível com estoque.\n");
+                            i--;
+                            continue;
+                        }
+                        else if (parcial==-3) {
+                            printf("A quantidade utilizada foi informada como zero ou inválida.\n");
+                            i--;
+                            continue;
+                        }
+                        else {
+                            total=total+parcial;
+                        }
+                    }
                 else {
-                    total=total+parcial;
+                    printf("Ocorreu um problema na operação\n");
+                    i--;
+                    continue;
                 }
             }
-        }
-        else {
-            printf("Ocorreu um problema na operação\n");
-            i--;
-            continue;
-        }
+
     }
     return total;
 }
