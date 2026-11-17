@@ -32,7 +32,7 @@ void salvar_estoque(no_avl_t* raiz, const char* relatorio_estoque ) {
 }
 
 no_avl_t* carregar_estoque(const char* relatorio_estoque) {
-    int lidos =0;
+    int lidos = 0;
     int contador = 0;
     no_avl_t* raiz = NULL;
 
