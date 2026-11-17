@@ -20,8 +20,11 @@ typedef struct {
 
 double custos_parciais(material *componente, double qtd_utilizada);
 double custos_totais(int total_insumos,no_avl_t *raiz);
-int normalizando_nome(char *registro,char *entrada_usuario);
-void coletar(no_avl_t *raiz,criterios_busca *criterios,busca_nome *busca);
-material* buscar_por_nome_gastos(no_avl_t* raiz,char* insumo,char* marca,char* especificacoes);
+static int normalizando_nome(char *registro,char *entrada_usuario);
+static int conferir_campos(char *registro_adicional,char *filtro);
+static int conferir_campos_exatos(char *registro_adicional,char *filtro);
+static void detalhar_material(material *recurso);
+static void coletar(no_avl_t *raiz,criterios_busca *criterios,busca_nome *busca);
+material *buscar_por_nome_gastos(no_avl_t* raiz,char* insumo,char* marca,char* especificacoes);
 
 #endif //TRABALHO_FINAL_PROG_II_GASTOS_H
