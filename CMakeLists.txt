@@ -18,6 +18,8 @@ add_executable(teste_estoque
         tests/teste_arquivo.c
         src/arquivo.c
         src/estoque.c
+        src/entrada.c
+        include/entrada.h
 )
 
 include(FetchContent)
