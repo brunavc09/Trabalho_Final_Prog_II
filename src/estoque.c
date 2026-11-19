@@ -4,36 +4,32 @@
 #include <string.h>
 
 static int proximo_id = 1;
+static void imprimir_material(const material* mat) {
+    printf("----------------------------------------\n");
+    printf("ID: %d | %s\n", mat->id, mat->insumo);
+    printf("Marca: %s | Espec.: %s\n",
+           mat->marca[0] != '\0' ? mat->marca : "-",
+           mat->especificacoes[0] != '\0' ? mat->especificacoes : "-");
+    printf("Qtd: %.2lf | Valor Unit.: R$ %.2f\n", mat->quantidade, mat->valor_unitario);
+    printf("Local: %s\n", mat->local[0] != '\0' ? mat->local : "-");
+}
+
 static int buscar_nome_rec(const no_avl_t* no, const char* texto) {
     if (no == NULL) return 0;
     int achados = buscar_nome_rec(no->esquerda, texto);
     const material* mat = no->dado;
     if (strstr(mat->insumo, texto) != NULL) {
-        printf("Id do produto: %d\n", mat->id);
-        printf("Nome: %s\n", mat->insumo);
-        printf("Marca: %s\n", mat->marca);
-        printf("Especificações: %s\n", mat->especificacoes);
-        printf("Quantidade: %.2lf\n", mat->quantidade);
-        printf("Onde esta guardado: %s\n", mat->local);
+        imprimir_material(mat);
         achados++;
     }
     return achados + buscar_nome_rec(no->direita, texto);
 }
 
 static void listar_materiais_rec(const no_avl_t* no) {
-    if (no == NULL) {
-        return;
-    }
+    if (no == NULL) return;
     listar_materiais_rec(no->esquerda);
-    const material* mat = no->dado;
-    printf("Id do produto: %d\n", mat->id);
-    printf("Nome: %s\n", mat->insumo);
-    printf("Marca: %s\n", mat->marca);
-    printf("Especificações: %s\n", mat->especificacoes);
-    printf("Quantidade: %.2lf\n", mat->quantidade);
-    printf("Onde esta guardado: %s\n", mat->local);
+    imprimir_material(no->dado);
     listar_materiais_rec(no->direita);
-    return;
 }
 
 
@@ -99,6 +95,7 @@ void definir_proximo_id(int novo_id) {
         return;
     }
     listar_materiais_rec(raiz);
+    printf("----------------------------------------\n");
 }
 
 int editar_material(no_avl_t* raiz, int id,  const char* insumo, const char* marca,
@@ -107,6 +104,7 @@ int editar_material(no_avl_t* raiz, int id,  const char* insumo, const char* mar
     if (m == NULL) {
         return 0;
     }
+    if (quantidade < 0 || valor_unitario < 0) return 0;
     snprintf(m->insumo, sizeof m->insumo, "%s", insumo);
     snprintf(m->marca, sizeof m->marca, "%s", marca);
     snprintf(m->especificacoes, sizeof m->especificacoes, "%s", especificacoes);
@@ -145,9 +143,13 @@ int movimentar_quantidade(no_avl_t* raiz, int id, double variacao) {
     if (m == NULL) {
         return 0;
     }
+    const double EPSILON = 1e-6;
     double quantidade_resultante = m->quantidade + variacao;
-    if (quantidade_resultante < 0) {
+    if (quantidade_resultante < -EPSILON) {
         return 0;
+    }
+    if (quantidade_resultante < 0.0) {
+        quantidade_resultante = 0.0;
     }
     m->quantidade = quantidade_resultante;
     return 1;
