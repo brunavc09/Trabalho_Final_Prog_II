@@ -20,6 +20,23 @@ static int buscar_nome_rec(const no_avl_t* no, const char* texto) {
     return achados + buscar_nome_rec(no->direita, texto);
 }
 
+static void listar_materiais_rec(const no_avl_t* no) {
+    if (no == NULL) {
+        return;
+    }
+    listar_materiais_rec(no->esquerda);
+    const material* mat = no->dado;
+    printf("Id do produto: %d\n", mat->id);
+    printf("Nome: %s\n", mat->insumo);
+    printf("Marca: %s\n", mat->marca);
+    printf("Especificações: %s\n", mat->especificacoes);
+    printf("Quantidade: %.2lf\n", mat->quantidade);
+    printf("Onde esta guardado: %s\n", mat->local);
+    listar_materiais_rec(no->direita);
+    return;
+}
+
+
 void buscar_por_nome(no_avl_t* raiz, const char* insumo) {
     if (buscar_nome_rec(raiz, insumo) == 0) {
         printf("Nenhum material encontrado.\n");
@@ -74,4 +91,64 @@ int obter_proximo_id(void) {
 }
 void definir_proximo_id(int novo_id) {
     proximo_id = novo_id;
+}
+
+ void listar_materiais(no_avl_t* raiz) {
+    if (raiz == NULL) {
+        printf("Estoque vazio!\n");
+        return;
+    }
+    listar_materiais_rec(raiz);
+}
+
+int editar_material(no_avl_t* raiz, int id,  const char* insumo, const char* marca,
+    const char* especificacoes, double quantidade, float valor_unitario, const char* local) {
+    material* m = buscar_por_id(raiz, id);
+    if (m == NULL) {
+        return 0;
+    }
+    snprintf(m->insumo, sizeof m->insumo, "%s", insumo);
+    snprintf(m->marca, sizeof m->marca, "%s", marca);
+    snprintf(m->especificacoes, sizeof m->especificacoes, "%s", especificacoes);
+    m->quantidade=quantidade;
+    m->valor_unitario=valor_unitario;
+    snprintf(m->local, sizeof m->local, "%s", local);
+    return 1;
+}
+
+int atualizar_quantidade(no_avl_t* raiz, int id, double nova_quantidade) {
+    material* m = buscar_por_id(raiz, id);
+    if (m == NULL) {
+        return 0;
+    }
+    if (nova_quantidade < 0) {
+        return 0;
+    }
+    m->quantidade = nova_quantidade;
+    return 1;
+}
+
+int atualizar_valor_unitario(no_avl_t* raiz, int id, float novo_valor) {
+    material* m = buscar_por_id(raiz, id);
+    if (m == NULL) {
+        return 0;
+    }
+    if (novo_valor < 0) {
+        return 0;
+    }
+    m->valor_unitario = novo_valor;
+    return 1;
+}
+
+int movimentar_quantidade(no_avl_t* raiz, int id, double variacao) {
+    material* m = buscar_por_id(raiz, id);
+    if (m == NULL) {
+        return 0;
+    }
+    double quantidade_resultante = m->quantidade + variacao;
+    if (quantidade_resultante < 0) {
+        return 0;
+    }
+    m->quantidade = quantidade_resultante;
+    return 1;
 }
