@@ -20,7 +20,7 @@ add_executable(teste_estoque
 )
 
 add_executable(teste_entrada
-        src/teste_entrada.c
+        tests/teste_entrada.c
         src/entrada.c
 )
 
