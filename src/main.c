@@ -12,9 +12,9 @@ int main(void) {
 
     int opcao;
     printf("Sistema de estoque da marcenaria\n");
-    printf("Especificações");
+
     do {
-        printf("_______________________________\n");
+        printf("\n_______________________________\n");
         printf("Selecione a opção desejada:\n");
         printf("1. Adicionar ao estoque;\n");
         printf("2. Remover do estoque;\n");
