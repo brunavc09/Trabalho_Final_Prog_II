@@ -10,16 +10,18 @@ add_executable(Trabalho_Final_Prog_II
         src/gastos.c
         src/main.c
         src/arquivo.c
+        src/entrada.c
 )
 
 add_executable(teste_estoque
-        include/estoque.h
-        include/arquivo.h
         tests/teste_arquivo.c
         src/arquivo.c
         src/estoque.c
+)
+
+add_executable(teste_entrada
+        src/teste_entrada.c
         src/entrada.c
-        include/entrada.h
 )
 
 include(FetchContent)
@@ -33,3 +35,4 @@ FetchContent_MakeAvailable(libprg)
 
 target_link_libraries(Trabalho_Final_Prog_II PUBLIC libprg)
 target_link_libraries(teste_estoque PUBLIC libprg)
+target_link_libraries(teste_entrada PUBLIC libprg)
