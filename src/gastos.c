@@ -1,4 +1,4 @@
-#include "gastos.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -10,6 +10,7 @@
 #endif
 #include <stdlib.h>
 #include <libprg/libprg.h>
+#include "gastos.h"
 
 double custos_parciais(material *componente, double qtd_utilizada) {
     if (componente==NULL || componente->quantidade==0) {
