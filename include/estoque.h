@@ -20,7 +20,7 @@ no_avl_t* remover_material(no_avl_t* raiz, int id);
 material* criar_material(const char* insumo, const char* marca, const char* especificacoes,double quantidade, float valor_unitario, const char* local);
 int obter_proximo_id(void);
 void definir_proximo_id(int novo_id);
-void listar_materiais(no_avl_t* raiz;
+void listar_materiais(no_avl_t* raiz);
 int editar_material(no_avl_t* raiz, int id,  const char* insumo, const char* marca,const char* especificacoes, double quantidade, float valor_unitario, const char* local);
 int atualizar_valor_unitario(no_avl_t* raiz, int id, float novo_valor);
 int movimentar_quantidade(no_avl_t* raiz, int id, double variacao);
