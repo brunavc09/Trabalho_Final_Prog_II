@@ -26,5 +26,6 @@ static int conferir_campos_exatos(const char *registro_adicional, const char *fi
 static void detalhar_material(material *recurso);
 static void coletar(const no_avl_t *raiz,criterios_busca *criterios,busca_nome *busca);
 material *buscar_por_nome_gastos(no_avl_t* raiz,char* insumo,char* marca,char* especificacoes);
+void calcular_gastos(no_avl_t *raiz);
 
 #endif //TRABALHO_FINAL_PROG_II_GASTOS_H

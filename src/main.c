@@ -279,6 +279,28 @@ static void executar_desfazer(no_avl_t* raiz, no_pilha_t** pilha_desfazer, const
     free(anterior);
 }
 
+void calcular_gastos(no_avl_t *raiz) {
+    char entrada[30],*fim;
+    printf("Quantos materiais foram utilizados?\n");
+    fgets(entrada,30,stdin);
+    if (fgets(entrada, sizeof(entrada), stdin) == NULL) {
+        return;
+    }
+    entrada[strcspn(entrada, "\r\n")] = '\0';
+
+    long aux=strtol(entrada,&fim,10);
+    if (fim==entrada || *fim!='\0') {
+        printf("Número inválido.\n");
+        return;
+    }
+
+    double custo=custos_totais((int)aux,raiz);
+    if (custo>=0) {
+        printf("O gasto total foi %lf\n", custo);
+    }
+}
+
+
 int main(void) {
 #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
@@ -297,14 +319,15 @@ int main(void) {
         printf("3. Buscar / Editar / Remover\n");
         printf("4. Desfazer ultima edicao\n");
         printf("5. Listar materiais abaixo de %d unidades\n", LIMITE_ESTOQUE_BAIXO);
-        printf("6. Sair\n");
+        printf("6. Calcular gastos com projeto\n");
+        printf("7. Sair\n");
 
         if (!ler_inteiro("Escolha uma opcao: ", &opcao)) {
             printf("\nEntrada encerrada.\n");
-            opcao = 6;
+            opcao = 7;
         }
 
-        if (opcao == 6) {
+        if (opcao == 7) {
             printf("Salvando estoque e encerrando...\n");
             salvar_estoque(raiz, NOME_ARQUIVO);
             liberar_pilha_desfazer(&pilha_desfazer);
@@ -327,6 +350,9 @@ int main(void) {
                 break;
             case 5:
                 listar_estoque_baixo(raiz);
+                break;
+            case 6:
+                calcular_gastos(raiz);
                 break;
             default:
                 printf("Opcao inexistente. Tente novamente.\n");
