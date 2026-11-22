@@ -11,8 +11,9 @@
 #include <stdlib.h>
 #include <libprg/libprg.h>
 #include "gastos.h"
+#include <math.h>
 
-double custos_parciais(material *componente, double qtd_utilizada) {
+double custos_parciais(const material *componente, double qtd_utilizada) {
     if (componente==NULL || componente->quantidade==0) {
         return -1;
     }
@@ -28,28 +29,32 @@ double custos_parciais(material *componente, double qtd_utilizada) {
         return valor_por_qtd;
     }
 }
-static int normalizando_nome(char *registro,char *entrada_usuario) {
+static int normalizando_nome(const char *registro,const char *entrada_usuario) {
     size_t aux = strlen(entrada_usuario);
-    if (aux=0) {
+    if (aux==0) {
         return 0;
     }
      for (;*registro;registro++) {
          size_t i=0;
-         while (i<aux && registro[i] && tolower((unsigned char)entrada_usuario[i])==tolower(registro[i])) {
+         while (i<aux && registro[i] && tolower((unsigned char)entrada_usuario[i])==tolower((unsigned char)registro[i])) {
              i++;
+         }
+
+         if (i==aux) {
+             return 1;
          }
      }
     return 0;
 }
 
-static int conferir_campos(char *registro_adicional,char *filtro) {
+static int conferir_campos(const char *registro_adicional, const char *filtro) {
     if (filtro==NULL || filtro[0]=='\0') {
         return 1;
     }
     return normalizando_nome(registro_adicional,filtro);
 }
 
-static int conferir_campos_exatos(char *registro_adicional,char *filtro) {
+static int conferir_campos_exatos(const char *registro_adicional, const char *filtro) {
     if (filtro==NULL || filtro[0]=='\0') {
         return 1;
     }
@@ -60,12 +65,11 @@ static void detalhar_material(material *recurso) {
     printf("Material: %s\n",recurso->insumo);
     printf("Marca: %s\n",recurso->marca);
     printf("Especificações: %s\n",recurso->especificacoes);
-    printf("Quantidade em estoque: %2.lf\n",recurso->quantidade);
-    printf("Local de Armazenamento: &s\n",recurso->local);
-    return;
+    printf("Quantidade em estoque: %.2lf\n",recurso->quantidade);
+    printf("Local de Armazenamento: %s\n",recurso->local);
 }
 
-static void coletar(no_avl_t *raiz,criterios_busca *criterios,busca_nome *busca) {
+static void coletar(const no_avl_t *raiz,criterios_busca *criterios,busca_nome *busca) {
     if (raiz==NULL) {
         return;
     }
@@ -102,8 +106,8 @@ static void coletar(no_avl_t *raiz,criterios_busca *criterios,busca_nome *busca)
 }
 
 material *buscar_por_nome_gastos(no_avl_t* raiz,char* insumo,char* marca,char* especificacoes) {
-    if (insumo==NULL) {
-        printf("O nome do material não foi informado.");
+    if (insumo==NULL || insumo[0]=='\0') {
+        printf("O nome do material não foi informado.\n");
         return NULL;
     }
 
@@ -122,8 +126,8 @@ material *buscar_por_nome_gastos(no_avl_t* raiz,char* insumo,char* marca,char* e
         return aux2.primeiro_achado;
     }
 
-    printf("Foram encontrados %d materias.\n",aux2.achados);
-    aux2.listar==1;
+    printf("Foram encontrados %d materiais.\n",aux2.achados);
+    aux2.listar=1;
     aux2.achados = aux2.exatos = 0;
     aux2.primeiro_achado = aux2.correspondente_exato = NULL;
     coletar(raiz,&aux,&aux2);
@@ -146,17 +150,23 @@ double custos_totais(int total_insumos,no_avl_t *raiz) {
 
     for (int i=0;i<total_insumos;i++) {
         printf("Adicionar material: ");
-        fgets(insumo, 200, stdin);
+        if (fgets(insumo, 200, stdin) == NULL) {
+            break;
+        }
         insumo[strcspn(insumo, "\r\n")] = '\0';
         aux2=strcasecmp(insumo,"Sair");
         if (aux2==0) {
             break;
         }
         printf("(Opcional) Adicionar marca: ");
-        fgets(marca, 100, stdin);
+        if (fgets(marca, 100, stdin) == NULL) {
+            break;
+        }
         marca[strcspn(marca, "\r\n")] = '\0';
         printf("(Opcional) Adicione especificações: ");
-        fgets(esp,200, stdin);
+        if (fgets(esp,200, stdin) == NULL) {
+            break;
+        }
         esp[strcspn(esp, "\r\n")] = '\0';
         material *resul_busca=buscar_por_nome_gastos(raiz,insumo,marca,esp);
             if (resul_busca==NULL) {
@@ -165,9 +175,18 @@ double custos_totais(int total_insumos,no_avl_t *raiz) {
             }
             else {
                 printf("Adicione a quantidade utilizada: ");
-                fgets(qtd,30, stdin);
+                if (fgets(qtd,30, stdin) == NULL) {
+                    break;
+                }
+                qtd[strcspn(qtd, "\r\n")] = '\0';
+                for (int k = 0; qtd[k] != '\0'; k++) {
+                    if (qtd[k] == ',') {
+                        qtd[k] = '.';
+                    }
+                }
                 aux=strtod(qtd,&fim);
-                if (fim!=qtd) {
+
+                if (fim!=qtd && *fim=='\0' && isfinite(aux)) {
                         parcial=custos_parciais(resul_busca,aux);
                         if (parcial==-1) {
                             printf("Produto não possui quantidade em estoque.\n");
@@ -186,6 +205,7 @@ double custos_totais(int total_insumos,no_avl_t *raiz) {
                         }
                         else {
                             total=total+parcial;
+                            resul_busca->quantidade=resul_busca->quantidade-aux;
                         }
                     }
                 else {
