@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libprg/libprg.h>
 #include "estoque.h"
 #include "arquivo.h"
@@ -10,64 +11,67 @@
 #include <windows.h>
 #endif
 
-static void liberar_arvore_estoque(no_avl_t* raiz) {
-    if (raiz == NULL) {
+#define TAM_TEXTO 100
+#define LIMITE_ESTOQUE_BAIXO 10
+
+typedef struct no_pilha {
+    material* backup;
+    struct no_pilha* prox;
+} no_pilha_t;
+
+typedef struct no_lista {
+    const material* mat;
+    struct no_lista* prox;
+} no_lista_t;
+
+static void empilhar_backup(no_pilha_t** topo, const material* original) {
+    if (original == NULL) return;
+
+    material* copia = malloc(sizeof(material));
+    if (copia == NULL) return;
+    memcpy(copia, original, sizeof(material));
+
+    no_pilha_t* novo = malloc(sizeof(no_pilha_t));
+    if (novo == NULL) {
+        free(copia);
         return;
     }
-    liberar_arvore_estoque(raiz->esquerda);
-    liberar_arvore_estoque(raiz->direita);
-    free(raiz->dado);
-    free(raiz);
+
+    novo->backup = copia;
+    novo->prox = *topo;
+    *topo = novo;
 }
 
-int main(void) {
-    #ifdef _WIN32
-    SetConsoleOutputCP(CP_UTF8);
-    SetConsoleCP(CP_UTF8);
-    #endif
+static material* desempilhar_backup(no_pilha_t** topo) {
+    if (*topo == NULL) return NULL;
 
-    const char* NOME_ARQUIVO = "estoque.txt";
-    no_avl_t* raiz = carregar_estoque(NOME_ARQUIVO);
-    int opcao = 0;
+    no_pilha_t* removido = *topo;
+    material* dados = removido->backup;
+    *topo = removido->prox;
+    free(removido);
 
-    while (1) {
-        printf("\n=== CONTROLE DE ESTOQUE - MARCENARIA ===\n");
-        printf("1. Cadastrar material\n");
-        printf("2. Listar materiais\n");
-        printf("3. Buscar / Editar / Movimentar\n");
-        printf("4. Calcular custos de producao\n");
-        printf("5. Sair\n");
+    return dados;
+}
 
-        if (!ler_inteiro("Escolha uma opcao: ", &opcao)) {
-            printf("\nEntrada encerrada.\n");
-            opcao = 5;
-        }
-
-        if (opcao == 5) {
-            printf("Salvando estoque e encerrando...\n");
-            salvar_estoque(raiz, NOME_ARQUIVO);
-            liberar_arvore_estoque(raiz);
-            break;
-        }
-
-        switch (opcao) {
-            case 1:
-                printf("Em construcao.\n");
-                break;
-            case 2:
-                listar_materiais(raiz);
-                break;
-            case 3:
-                printf("Em construcao.\n");
-                break;
-            case 4:
-                printf("Em construcao.\n");
-                break;
-            default:
-                printf("Opcao inexistente. Tente novamente.\n");
-                break;
-        }
+static void liberar_pilha_desfazer(no_pilha_t** topo) {
+    while (*topo != NULL) {
+        material* dados = desempilhar_backup(topo);
+        free(dados);
     }
+}
 
-    return 0;
+static void inserir_fim_lista(no_lista_t** inicio, no_lista_t** fim, const material* mat) {
+    no_lista_t* novo = malloc(sizeof(no_lista_t));
+    if (novo == NULL) return;
+
+    novo->mat = mat;
+    novo->prox = NULL;
+
+    if (*inicio == NULL) {
+        *inicio = novo;
+        *fim = novo;
+    } else {
+        (*fim)->prox = novo;
+        *fim = novo;
+    }
 }
