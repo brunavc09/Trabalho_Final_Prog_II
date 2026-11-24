@@ -1,4 +1,4 @@
-## Sistema de Gestão de Estoque e Custos para Marcenaria
+#  Sistema de Gestão de Estoque e Custos para Marcenaria
 Projeto final da disciplina Programação II do curso de Engenharia de Telecomunicações.
 
 Sistema escrito em linguagem C, desenvolvido no CLion, que organiza o estoque de materiais de uma marcenaria e calcula o custo dos materiais usados em um serviço.
