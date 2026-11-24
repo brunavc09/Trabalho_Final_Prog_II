@@ -80,7 +80,7 @@ Observações
 
 ## 7. Organização do repositório
 
-.
+```
 ├── CMakeLists.txt        configuração da compilação
 ├── README.md
 ├── include/
@@ -97,6 +97,7 @@ Observações
 └── tests/
     └── teste_arquivo.c   programa de teste (executável teste_estoque)
     └── teste_entrada.c   
+```
 
 A biblioteca libprg (estruturas de dados) fica em um repositório separado e é baixada na compilação.
 
