@@ -122,7 +122,7 @@ static void liberar_arvore_estoque(no_avl_t* raiz) {
     free(raiz);
 }
 
-static void menu_cadastrar(no_avl_t** raiz, const char* nome_arquivo) {
+static void menu_cadastrar(no_avl_t** raiz, const char* relatorio_estoque) {
     printf("\n--- CADASTRAR MATERIAL ---\n");
 
     char insumo[TAM_TEXTO] = "";
@@ -153,14 +153,14 @@ static void menu_cadastrar(no_avl_t** raiz, const char* nome_arquivo) {
     material* novo = criar_material(insumo, marca, especificacoes, quantidade, (float)valor_temp, local);
     if (novo != NULL) {
         *raiz = cadastrar_material(*raiz, novo);
-        salvar_estoque(*raiz, nome_arquivo);
+        salvar_estoque(*raiz, relatorio_estoque);
         printf("Material cadastrado (ID: %d) e salvo com sucesso!\n", novo->id);
     } else {
         printf("Erro ao criar o material.\n");
     }
 }
 
-static void menu_gerenciar(no_avl_t** raiz, no_pilha_t** pilha_desfazer, const char* nome_arquivo) {
+static void menu_gerenciar(no_avl_t** raiz, no_pilha_t** pilha_desfazer, const char* relatorio_estoque) {
     int sub_opcao = 0;
     printf("\n--- BUSCAR / EDITAR / REMOVER ---\n");
     printf("1. Buscar por ID\n");
@@ -230,7 +230,7 @@ static void menu_gerenciar(no_avl_t** raiz, no_pilha_t** pilha_desfazer, const c
                 ler_texto("Novo local: ", local, sizeof(local));
 
                 if (editar_material(*raiz, id, insumo, marca, especificacoes, quantidade, (float)valor_temp, local)) {
-                    salvar_estoque(*raiz, nome_arquivo);
+                    salvar_estoque(*raiz, relatorio_estoque);
                     printf("Material atualizado e salvo com sucesso!\n");
                 } else {
                     free(desempilhar_backup(pilha_desfazer));
@@ -247,7 +247,7 @@ static void menu_gerenciar(no_avl_t** raiz, no_pilha_t** pilha_desfazer, const c
                     break;
                 }
                 *raiz = remover_material(*raiz, id);
-                salvar_estoque(*raiz, nome_arquivo);
+                salvar_estoque(*raiz, relatorio_estoque);
                 printf("Material removido e estoque salvo!\n");
             }
             break;
@@ -260,7 +260,7 @@ static void menu_gerenciar(no_avl_t** raiz, no_pilha_t** pilha_desfazer, const c
     }
 }
 
-static void executar_desfazer(no_avl_t* raiz, no_pilha_t** pilha_desfazer, const char* nome_arquivo) {
+static void executar_desfazer(no_avl_t* raiz, no_pilha_t** pilha_desfazer, const char* relatorio_estoque) {
     material* anterior = desempilhar_backup(pilha_desfazer);
     if (anterior == NULL) {
         printf("Nada para desfazer.\n");
@@ -270,7 +270,7 @@ static void executar_desfazer(no_avl_t* raiz, no_pilha_t** pilha_desfazer, const
     if (editar_material(raiz, anterior->id, anterior->insumo, anterior->marca,
                         anterior->especificacoes, anterior->quantidade,
                         anterior->valor_unitario, anterior->local)) {
-        salvar_estoque(raiz, nome_arquivo);
+        salvar_estoque(raiz, relatorio_estoque);
         printf("Edicao desfeita! Material ID %d (%s) restaurado.\n", anterior->id, anterior->insumo);
     } else {
         printf("Nao foi possivel desfazer: o material ID %d nao existe mais no estoque.\n", anterior->id);
@@ -307,8 +307,8 @@ int main(void) {
     SetConsoleCP(CP_UTF8);
 #endif
 
-    const char* NOME_ARQUIVO = "estoque.txt";
-    no_avl_t* raiz = carregar_estoque(NOME_ARQUIVO);
+    const char* relatorio_estoque = "estoque.txt";
+    no_avl_t* raiz = carregar_estoque(relatorio_estoque);
     no_pilha_t* pilha_desfazer = NULL;
     int opcao = 0;
 
@@ -329,7 +329,7 @@ int main(void) {
 
         if (opcao == 7) {
             printf("Salvando estoque e encerrando...\n");
-            salvar_estoque(raiz, NOME_ARQUIVO);
+            salvar_estoque(raiz, relatorio_estoque);
             liberar_pilha_desfazer(&pilha_desfazer);
             liberar_arvore_estoque(raiz);
             break;
@@ -337,16 +337,16 @@ int main(void) {
 
         switch (opcao) {
             case 1:
-                menu_cadastrar(&raiz, NOME_ARQUIVO);
+                menu_cadastrar(&raiz, relatorio_estoque);
                 break;
             case 2:
                 listar_materiais(raiz);
                 break;
             case 3:
-                menu_gerenciar(&raiz, &pilha_desfazer, NOME_ARQUIVO);
+                menu_gerenciar(&raiz, &pilha_desfazer, relatorio_estoque);
                 break;
             case 4:
-                executar_desfazer(raiz, &pilha_desfazer, NOME_ARQUIVO);
+                executar_desfazer(raiz, &pilha_desfazer, relatorio_estoque);
                 break;
             case 5:
                 listar_estoque_baixo(raiz);
