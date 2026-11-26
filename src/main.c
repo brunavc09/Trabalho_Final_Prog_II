@@ -283,7 +283,7 @@ void calcular_gastos(no_avl_t *raiz) {
     char entrada[30],*fim;
     printf("Quantos materiais foram utilizados?\n");
     fgets(entrada,30,stdin);
-    if (fgets(entrada, sizeof(entrada), stdin) == NULL) {
+    if (entrada == NULL) {
         return;
     }
     entrada[strcspn(entrada, "\r\n")] = '\0';
